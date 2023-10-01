@@ -2,6 +2,8 @@
 import os
 import datetime
 import random
+import time
+
 
 def whatDay(jours_a_remonter):
     date_actuelle = datetime.date.today()
@@ -18,25 +20,30 @@ def whatDay(jours_a_remonter):
 
 def make_commit(daysAgo):
     # créer un commit dans le répository en changeant légèrement un fichier
-    os.system(f"echo '{daysAgo}' > file")
-    os.system('git add file')
-    os.system(f"git commit -m '{daysAgo}' --date relative:{daysAgo}.days.ago")
+
+    if whatDay(daysAgo) == "Saturday" or whatDay(daysAgo)=="Sunday":
+        os.system(f"echo '{daysAgo}' > file")
+        os.system('git add file')
+        os.system(f"git commit -m '{daysAgo}' --date relative:{daysAgo}.days.ago") 
+    else:
+        randomCommitNumber = random.randint(2,4)
+
+        for i in range (randomCommitNumber):
+            time.sleep(0.1)
+            randomNumber = random.randint(100,4000)
+            os.system(f"echo '{daysAgo}+ {randomNumber}' > file")
+            os.system('git add file')
+            os.system(f"git commit -m '{daysAgo}' --date relative:{daysAgo}.days.ago") 
+
 
 def make_commits(days):
     for i in range(days):
-        if whatDay(days)!= "Saturday" or "Sunday":
-	    random_number = random.randint(1, 4)
-	    for i in range(random_number):
-                make_commit(i)
-	else:
-		make_commit(i)
+        make_commit(i)
 
 
 
 
-
-
-make_commits(20)
+make_commits(150)
 
 os.system("git push --force origin main")
 random_number = random.randint(1, 10)
